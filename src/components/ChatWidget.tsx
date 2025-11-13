@@ -23,7 +23,12 @@ export function ChatWidget({ agentUrl }: ChatWidgetProps) {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
-          <div className="relative h-[80vh] w-full max-w-md rounded-2xl bg-zinc-950/95 p-3 shadow-2xl shadow-black/70 sm:h-[70vh]">
+          <div
+            className="relative w-full max-w-md rounded-2xl bg-zinc-950/95 p-3 shadow-2xl shadow-black/70"
+            style={{
+              maxHeight: "85vh",    // ⬅ Added: prevents overflow on all screens
+            }}
+          >
             <div className="mb-2 flex items-center justify-between px-1">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
                 AI Agent
@@ -36,7 +41,14 @@ export function ChatWidget({ agentUrl }: ChatWidgetProps) {
                 <X className="h-4 w-4 text-zinc-400" />
               </button>
             </div>
-            <div className="h-[calc(100%-2rem)] overflow-hidden rounded-xl border border-zinc-800 bg-black">
+
+            {/* CHAT WINDOW HEIGHT FIX */}
+            <div
+              className="overflow-hidden rounded-xl border border-zinc-800 bg-black"
+              style={{
+                maxHeight: "75vh",   // ⬅ Added: ensures iframe never exceeds viewport
+              }}
+            >
               <iframe
                 src={agentUrl}
                 className="h-full w-full"
