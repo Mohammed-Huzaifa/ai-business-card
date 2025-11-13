@@ -1,3 +1,4 @@
+// src/app/api/cards/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { createCard } from "@/lib/store";
 
@@ -23,8 +24,11 @@ export async function POST(req: NextRequest) {
     agentUrl,
   });
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+  // Build base URL from the incoming request
+  const url = new URL(req.url);
+  const baseUrl = `${url.protocol}//${url.hostname}${
+    url.port ? `:${url.port}` : ""
+  }`;
 
   const cardUrl = `${baseUrl}/card/${card.slug}`;
 
