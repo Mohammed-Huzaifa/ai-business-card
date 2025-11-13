@@ -1,5 +1,6 @@
+// src/app/api/cards/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createCard } from "@/lib/store";
+import { createCardSlug, parseCardSlug } from "@/lib/store";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,7 +14,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const card = createCard({
+    // Build slug that encodes the data
+    const slug = createCardSlug({
       name,
       company,
       title,
@@ -23,21 +25,32 @@ export async function POST(req: NextRequest) {
       agentUrl,
     });
 
-    // Get base URL from request origin
+    // Reconstruct the card from the slug so the client gets full data if needed
+    const card = parseCardSlug(slug);
+    if (!card) {
+      return NextResponse.json(
+        { error: "Failed to generate card" },
+        { status: 500 }
+      );
+    }
+
     const url = new URL(req.url);
     const baseUrl = `${url.protocol}//${url.hostname}`;
 
     return NextResponse.json(
       {
         card,
-        cardUrl: `${baseUrl}/card/${card.slug}`,
+        cardUrl: `${baseUrl}/card/${slug}`,
       },
       { status: 201 }
     );
   } catch (err) {
     console.error("API Error:", err);
     return NextResponse.json(
-      { error: "Server error", details: err instanceof Error ? err.message : err },
+      {
+        error: "Server error",
+        details: err instanceof Error ? err.message : String(err),
+      },
       { status: 500 }
     );
   }
