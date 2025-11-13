@@ -44,18 +44,30 @@ export function ChatWidget({ agentUrl }: ChatWidgetProps) {
 
             {/* CHAT WINDOW HEIGHT FIX */}
             <div
-              className="overflow-hidden rounded-xl border border-zinc-800 bg-black"
-              style={{
-                maxHeight: "75vh",   // ⬅ Added: ensures iframe never exceeds viewport
-              }}
-            >
-              <iframe
-                src={agentUrl}
-                className="h-full w-full"
-                title="AI Agent Chat"
-                allow="clipboard-write; microphone; camera"
-              />
-            </div>
+  className="overflow-hidden rounded-xl border border-zinc-800 bg-black"
+  style={{
+    maxHeight: "75vh",
+    height: "75vh",       // ensure container has height
+  }}
+>
+  <div
+    className="flex flex-col"
+    style={{ height: "100%" }}
+  >
+    <iframe
+      src={agentUrl}
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: "60vh",  // fixes collapsed iframe
+      }}
+      className="rounded-b-xl"
+      title="AI Agent Chat"
+      allow="clipboard-write; microphone; camera"
+    />
+  </div>
+</div>
+
           </div>
         </div>
       )}
