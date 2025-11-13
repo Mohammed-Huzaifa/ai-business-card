@@ -1,6 +1,4 @@
 // src/lib/store.ts
-import fs from "fs";
-import path from "path";
 
 export type Card = {
   slug: string;
@@ -13,36 +11,8 @@ export type Card = {
   agentUrl: string;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "cards.json");
-
-function ensureDataFile() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, "[]", "utf8");
-  }
-}
-
-function loadCards(): Card[] {
-  try {
-    ensureDataFile();
-    const raw = fs.readFileSync(DATA_FILE, "utf8");
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      return parsed as Card[];
-    }
-    return [];
-  } catch {
-    return [];
-  }
-}
-
-function saveCards(cards: Card[]) {
-  ensureDataFile();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(cards, null, 2), "utf8");
-}
+// In-memory store (works on Vercel)
+const cards: Card[] = [];
 
 function slugify(input: string) {
   return input
@@ -56,15 +26,12 @@ export function createCard(data: Omit<Card, "slug">): Card {
   const random = Math.random().toString(36).slice(2, 6);
   const slug = `${base}-${random}`;
 
-  const cards = loadCards();
   const card: Card = { slug, ...data };
   cards.push(card);
-  saveCards(cards);
 
   return card;
 }
 
 export function getCard(slug: string): Card | null {
-  const cards = loadCards();
   return cards.find((c) => c.slug === slug) ?? null;
 }
