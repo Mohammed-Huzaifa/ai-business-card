@@ -20,7 +20,6 @@ export default function CardPage({ params }: Props) {
     <main className="flex min-h-screen items-center justify-center px-4 py-8">
       <div className="w-full max-w-sm rounded-3xl bg-gradient-to-b from-zinc-900/90 via-cardBg to-black p-[1px] shadow-card">
         <div className="rounded-3xl bg-gradient-to-b from-zinc-950/95 to-black p-5">
-          {/* Top: avatar + name */}
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900">
               {card.avatarUrl ? (
@@ -54,10 +53,8 @@ export default function CardPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Divider */}
           <div className="my-4 h-px bg-gradient-to-r from-transparent via-zinc-700/70 to-transparent" />
 
-          {/* Contact section */}
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-3 text-zinc-300">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-900/80">
@@ -93,7 +90,6 @@ export default function CardPage({ params }: Props) {
             </div>
           </div>
 
-          {/* CTA: Connect with AI agent */}
           <ChatWidget agentUrl={card.agentUrl} />
 
           <p className="mt-4 text-[10px] text-zinc-500">

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // App Router is default in Next 14, no need for experimental flags
+  // No output: 'export' here. Use default Node/Edge runtime.
 };
 
 export default nextConfig;
